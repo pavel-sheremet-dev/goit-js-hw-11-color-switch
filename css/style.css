@@ -11,6 +11,7 @@
 
 .btn-outline-primary {
   background-color: #ffffff;
+  font-size: 20px;
 }
 
 .btn-outline-primary:disabled {
