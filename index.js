@@ -19,7 +19,22 @@ const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+const setBodyColor = () => {
+  document.body.style.backgroundColor = colors[0];
+};
+
+const clearBodyColor = () => {
+  document.body.style.backgroundColor = '';
+};
+
 const generateNonRepeatBodyBgColor = () => {
+  // let newIndex = randomIntegerFromInterval(0, colors.length - 1);
+  // while (colorsIndex === newIndex) {
+  //   newIndex = randomIntegerFromInterval(0, colors.length - 1);
+  // }
+  // colorsIndex = newIndex;
+  // document.body.style.backgroundColor = colors[newIndex];
+
   const colorsCopy = [...colors];
   colorsCopy.splice(colorsIndex, 1);
   const randomIndex = randomIntegerFromInterval(0, colorsCopy.length - 1);
@@ -28,25 +43,40 @@ const generateNonRepeatBodyBgColor = () => {
   colorsIndex = colors.indexOf(switchColor);
 };
 
+const toggleDisabled = () => {
+  refs.startBtn.disabled = refs.startBtn.disabled ? false : true;
+  refs.stopBtn.disabled = refs.startBtn.disabled ? false : true;
+};
+
 const onStartBtnClick = () => {
+  if (!colors.length) {
+    refs.startBtn.disabled = true;
+    return;
+  }
+  if (colors.length === 1) {
+    setBodyColor();
+    toggleDisabled();
+    return;
+  }
   if (!setIntervalId) {
     generateNonRepeatBodyBgColor();
     setIntervalId = setInterval(() => {
       generateNonRepeatBodyBgColor();
     }, 1000);
-
-    refs.startBtn.disabled = true;
-    refs.stopBtn.disabled = false;
+    toggleDisabled();
   }
 };
 
 const onStopBtnClick = () => {
+  if (colors.length === 1) {
+    clearBodyColor();
+    toggleDisabled();
+    return;
+  }
   if (setIntervalId) {
     clearInterval(setIntervalId);
     setIntervalId = null;
-
-    refs.startBtn.disabled = false;
-    refs.stopBtn.disabled = true;
+    toggleDisabled();
   }
 };
 
